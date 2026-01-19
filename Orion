@@ -1,0 +1,99 @@
+conky.config = {
+
+    lua_load = './Script.lua',
+
+-- Window
+    alignment = 'middle_right',
+    gap_x = 30,
+    gap_y = 50,
+
+    own_window = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 102,
+    own_window_class = 'Conky',
+    own_window_type = 'normal',
+    own_window_hints = "",
+    own_window_transparent = false,
+
+    minimum_width = 270,
+    minimum_height = 0,
+
+    maximum_width = 270,
+
+-- Graphics
+    background = true,
+
+    border_inner_margin = 10,
+    border_outer_margin = 10,
+    border_width = 5,
+
+    default_outline_color = 'white',
+    default_shade_color = 'black',
+
+    draw_borders = false,
+    draw_graph_borders = true,
+
+    color0 = 'd859f1',
+    color1 = 'F2A55A',
+    color2 = '5AD0F2',
+    color3 = 'AFF25A',
+    color4 = 'F5EA55',
+    color5 = 'C48189',
+
+    show_graph_range = false,
+
+-- Text
+    use_xft = true,
+    font = 'Adwaita Mono:size=9',
+    override_utf8_locale = true,
+
+    format_human_readable = true,
+    max_text_width = 0,
+    pad_percents = 0,
+    temperature_unit = 'fahrenheit',
+
+    lowercase = false,
+    uppercase = false,
+
+-- Technical
+    update_interval = 0.1,
+    cpu_avg_samples = 12,
+    detect_battery = 'BAT0',
+
+    double_buffer = true,
+    forced_redraw = false,
+    no_buffers = true,
+    imlib_cache_size = 0,
+
+    lua_draw_hook_post = "preDraw",
+};
+
+conky.text = [[
+#Time
+${color0}${font Adwaita Mono:size=10}$alignc${tztime US/Central %Z} | ${utime} UTC$font
+${color0}${font Adwaita Mono:size=40}$alignc${tztime US/Central %I:%M %p}$font
+${color0}${font Adwaita Mono:size=15}$alignc${tztime US/Central %A} | ${tztime US/Central %x}
+#Weather
+$color2${font}Weather: ${texeci 600 'curl -s wttr.in/?format=%C+%t'}
+$color2${font}Humidity: ${texeci 600 'curl -s wttr.in/?format=%h'}
+$color2${font}Wind: ${texeci 600 'curl -s wttr.in/?format=%w'}
+
+#CPU and battery
+$color1${font}Battery: ${battery_percent BAT0}% ${battery_bar 12 BAT0}
+$color1${font}CPU: ${CPU cpu0}% ${cpubar cpu0 12}
+$color1${cpugraph cpu0 18, 0}
+$color1${font Adwaita Mono:size=6}${lua_parse cpuIndividual}
+
+#Memory
+$color5${font}Memory: ${mem} / ${memmax} ${membar 9, 0}
+$color5${memgraph 18, 0}
+
+#Network
+$color3${font}Download Speed: ${downspeed ${gw_iface}}
+$color3${downspeedgraph ${gw_iface} 18, 0}
+$color3${font}Upload Speed: ${upspeed ${gw_iface}}
+$color3${upspeedgraph ${gw_iface} 18, 0}
+
+$color4${font}Name____________PID___CPU_Memory_
+$color4${font Adwaita Mono:size=7}${lua_parse top5CPU}
+]];
